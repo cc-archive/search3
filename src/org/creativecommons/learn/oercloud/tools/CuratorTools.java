@@ -180,10 +180,10 @@ public class CuratorTools {
 
         // list existing curators
         for (Curator c : s.getElmoManager().findAll(Curator.class)) {
-            System.out.println( ((Entity)c).getQName() + " (" + c.getName() + ")");
+            System.out.println( c.getUrl() + " (" + c.getName() + ")");
             
             for (Feed f: c.getFeeds()) {
-            	System.out.println("  " + ((Entity)f).getQName());            	
+            	System.out.println("  " + f.getUrl());            	
             }
         }
         

@@ -192,7 +192,7 @@ public class FeedTools {
 
         // list existing feeds
         for (Feed f : s.getElmoManager().findAll(Feed.class)) {
-        	System.out.println(f.getQname().toString());
+        	System.out.println(f.getUrl());
         }
         
     } // list

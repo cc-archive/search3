@@ -11,6 +11,10 @@ public class ContextBehavior implements IContextBehavior {
 
 	private QName qname;
 	
+	public String getUrl() {
+		return this.getQname().getNamespaceURI() + this.getQname().getLocalPart();
+	}
+	
 	public QName getQname() {
 		return qname;
 	}
