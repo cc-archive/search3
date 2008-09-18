@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.creativecommons.learn.oercloud.TripleStore;
-import org.creativecommons.learn.feed.IResourceExtractor;
+import org.creativecommons.learn.aggregate.IResourceExtractor;
 import org.creativecommons.learn.oercloud.Resource;
 import org.dom4j.Element;
 import org.dom4j.Node;

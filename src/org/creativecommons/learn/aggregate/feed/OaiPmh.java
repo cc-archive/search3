@@ -6,11 +6,11 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.creativecommons.learn.TripleStore;
+import org.creativecommons.learn.aggregate.IResourceExtractor;
 import org.creativecommons.learn.aggregate.oaipmh.NsdlDc;
 import org.creativecommons.learn.aggregate.oaipmh.OaiDcMetadata;
 import org.creativecommons.learn.aggregate.oaipmh.OerRecommender;
 import org.creativecommons.learn.aggregate.oaipmh.OerSubmissions;
-import org.creativecommons.learn.feed.IResourceExtractor;
 import org.creativecommons.learn.oercloud.Feed;
 import org.creativecommons.learn.oercloud.OaiResource;
 

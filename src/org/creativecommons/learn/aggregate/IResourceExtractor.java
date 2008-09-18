@@ -1,4 +1,4 @@
-package org.creativecommons.learn.feed;
+package org.creativecommons.learn.aggregate;
 
 import org.creativecommons.learn.oercloud.Feed;
 

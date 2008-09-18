@@ -3,7 +3,7 @@ package org.creativecommons.learn.aggregate.oaipmh;
 import java.util.Collection;
 
 import org.creativecommons.learn.TripleStore;
-import org.creativecommons.learn.feed.IResourceExtractor;
+import org.creativecommons.learn.aggregate.IResourceExtractor;
 import org.creativecommons.learn.oercloud.Feed;
 import org.creativecommons.learn.oercloud.OaiResource;
 import org.creativecommons.learn.oercloud.Resource;
