@@ -117,7 +117,9 @@ public class Main {
         	Date import_date = new Date();
 
         	// see if this feed needs to be re-imported
-            if (force || feed.getLastAggregated().before( calendar.getTime() )) {
+            if (force || 
+            		feed.getLastAggregated() == null || 
+            		feed.getLastAggregated().before( calendar.getTime() )) {
                 try {
                     // re-import necessary
                 	System.out.println("updating...");
