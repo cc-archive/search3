@@ -4,15 +4,17 @@ import javax.xml.namespace.QName;
 
 import org.creativecommons.learn.oercloud.TripleStore;
 import org.openrdf.elmo.ElmoManager;
+import org.openrdf.elmo.ElmoModule;
 
 public class ContextBehavior implements IContextBehavior {
 
 	private QName qname;
-	
+
 	public String getUrl() {
-		return this.get_QName().getNamespaceURI() + this.get_QName().getLocalPart();
+		return this.get_QName().getNamespaceURI()
+				+ this.get_QName().getLocalPart();
 	}
-	
+
 	public QName get_QName() {
 		return qname;
 	}
@@ -23,9 +25,23 @@ public class ContextBehavior implements IContextBehavior {
 
 	@Override
 	public ElmoManager getContextManager() {
-		
-		return TripleStore.get().getElmoManager(this.get_QName());
 
+		ElmoModule module = this.getContextModule();
+		
+		// include the default module
+		module.includeModule(TripleStore.get().createModule());
+		
+		return TripleStore.get().getElmoManager(module);
+
+	}
+
+	@Override
+	public ElmoModule getContextModule() {
+
+		ElmoModule module = TripleStore.get().createModule();
+		module.setGraph(this.get_QName());
+
+		return module;
 	}
 
 }
