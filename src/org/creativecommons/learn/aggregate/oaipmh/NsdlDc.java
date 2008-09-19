@@ -1,6 +1,6 @@
 package org.creativecommons.learn.aggregate.oaipmh;
 
-import org.creativecommons.learn.TripleStore;
+import org.creativecommons.learn.oercloud.TripleStore;
 import org.creativecommons.learn.aggregate.IResourceExtractor;
 import org.creativecommons.learn.oercloud.Feed;
 import org.creativecommons.learn.oercloud.OaiResource;
@@ -11,7 +11,6 @@ import se.kb.oai.OAIException;
 import se.kb.oai.pmh.MetadataFormat;
 import se.kb.oai.pmh.OaiPmhServer;
 import se.kb.oai.pmh.Record;
-import thewebsemantic.NotFoundException;
 
 public class NsdlDc extends OaiMetadataFormat implements IResourceExtractor {
 
@@ -61,10 +60,10 @@ public class NsdlDc extends OaiMetadataFormat implements IResourceExtractor {
 		
 		if (resource_url == null) return;
 		
-		Resource item = getResource(resource_url);
+		Resource item = getResourceInFeed(feed, resource_url);
 
 		// source
-		item.getSources().add(feed);
+		item.setAggregationSource(feed);
 
 		// title
 		item.setTitle(getNodeText(metadata, "//dc:title"));
@@ -85,15 +84,19 @@ public class NsdlDc extends OaiMetadataFormat implements IResourceExtractor {
 		item.getTypes().addAll(getNodesText(metadata, "//dc:type"));
 				
 		// see also
+		/*
+		 * 
+		 * XXX!
+		 * 
+		TripleStore.get().
 		try {
 			item.getSeeAlso().add(TripleStore.get().load(OaiResource.class, identifier));
 		} catch (NotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 		
-		// persist the Resource
-		TripleStore.get().save(item);
 	}
 
 }

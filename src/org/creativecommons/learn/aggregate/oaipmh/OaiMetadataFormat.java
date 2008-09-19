@@ -6,14 +6,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 
-import org.creativecommons.learn.oercloud.TripleStore;
 import org.creativecommons.learn.aggregate.IResourceExtractor;
+import org.creativecommons.learn.oercloud.Feed;
 import org.creativecommons.learn.oercloud.Resource;
+import org.creativecommons.learn.oercloud.TripleStore;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
 import se.kb.oai.pmh.MetadataFormat;
-import thewebsemantic.NotFoundException;
 
 public abstract class OaiMetadataFormat implements IResourceExtractor{
 
@@ -26,19 +26,16 @@ public abstract class OaiMetadataFormat implements IResourceExtractor{
 
 	}
 
-	public Resource getResource(String url) {
+	public Resource getResourceInFeed(Feed feed, String url) {
+
+		Resource result;
 		
-		Resource result = null;
-		
-		if (TripleStore.get().exists(Resource.class, url)) {
-			try {
-				result = TripleStore.get().load(Resource.class, url);
-			} catch (NotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		if (TripleStore.get().exists(feed.getUrl(), Resource.class, url)) {
+			
+			result = (Resource)TripleStore.get().find(feed.getUrl(), url);
+						
 		} else {
-			result = new Resource(url);
+			result = feed.addResource(url);
 		}
 		
 		return result;

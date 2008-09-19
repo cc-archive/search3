@@ -85,7 +85,7 @@ public class Main {
     	calendar.add(Calendar.DATE, -1);
     	
     	// get a list of all available feeds
-    	Collection<Feed> all_feeds = TripleStore.get().loadDeep(Feed.class);
+    	Iterable<Feed> all_feeds = TripleStore.get().getElmoManager().findAll(Feed.class);
     	
     	// filter by curator if necessary
     	if (line.hasOption("curator")) {
@@ -117,7 +117,7 @@ public class Main {
         	Date import_date = new Date();
 
         	// see if this feed needs to be re-imported
-            if (force || feed.getLastImport().before( calendar.getTime() )) {
+            if (force || feed.getLastAggregated().before( calendar.getTime() )) {
                 try {
                     // re-import necessary
                 	System.out.println("updating...");
@@ -126,8 +126,7 @@ public class Main {
                 } catch (IOException ex) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
-                    feed.setLastImport(import_date);
-                    TripleStore.get().save(feed);
+                    feed.setLastAggregated(import_date);
                 }
             }
             

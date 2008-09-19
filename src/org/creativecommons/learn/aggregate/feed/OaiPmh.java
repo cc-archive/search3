@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.creativecommons.learn.TripleStore;
+import org.creativecommons.learn.oercloud.TripleStore;
 import org.creativecommons.learn.aggregate.IResourceExtractor;
 import org.creativecommons.learn.aggregate.oaipmh.NsdlDc;
 import org.creativecommons.learn.aggregate.oaipmh.OaiDcMetadata;
@@ -22,7 +22,6 @@ import se.kb.oai.pmh.MetadataFormatsList;
 import se.kb.oai.pmh.OaiPmhServer;
 import se.kb.oai.pmh.Set;
 import se.kb.oai.pmh.SetsList;
-import thewebsemantic.NotFoundException;
 
 /**
  * 

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.creativecommons.learn.oercloud.TripleStore;
 import org.creativecommons.learn.aggregate.feed.OaiPmh;
 import org.creativecommons.learn.aggregate.feed.Opml;
 import org.creativecommons.learn.oercloud.Feed;
@@ -33,9 +32,8 @@ public class FeedUpdater {
 	protected void addEntry(SyndEntry entry) {
 
 		// XXX check if the entry exists first...
-		Resource new_entry = new Resource(entry.getUri());
+		Resource new_entry = this.feed.addResource(entry.getUri());
 
-		new_entry.getSources().add(feed);
 		new_entry.setTitle(entry.getTitle());
 		new_entry.setDescription(entry.getDescription().getValue());
 
@@ -64,23 +62,23 @@ public class FeedUpdater {
 		List<String> contributors = dc_metadata.getContributors();
 		new_entry.getContributors().addAll(contributors);
 
-		TripleStore.get().saveDeep(new_entry);
 	} // addEntry
 
 	public void update(boolean force) throws IOException {
 		// get the contents of the feed and emit events for each
 
 		// OPML
-		if (feed.getFeedType().toLowerCase().equals("opml")) {
+		/* XXX
+		if (feed.getType().toLowerCase().equals("opml")) {
 
 			new Opml().poll(feed);
 
-		} else if (feed.getFeedType().toLowerCase().equals("oai-pmh")) {
+		} else if (feed.getType().toLowerCase().equals("oai-pmh")) {
 
 			new OaiPmh().poll(feed, force);
 			
 		} else {
-			
+			*/
 			try {
 				SyndFeedInput input = new SyndFeedInput();
 				URLConnection feed_connection = new URL(feed.getUrl())
@@ -113,8 +111,10 @@ public class FeedUpdater {
 				Logger.getLogger(Feed.class.getName()).log(Level.SEVERE, null,
 						ex);
 			}
-
+/* XXX
 		} // not opml...
+		*/
+			
 	} // poll
 
 }

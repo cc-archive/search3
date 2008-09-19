@@ -1,7 +1,7 @@
 package org.creativecommons.learn.aggregate.oaipmh;
 
 
-import org.creativecommons.learn.TripleStore;
+import org.creativecommons.learn.oercloud.TripleStore;
 import org.creativecommons.learn.aggregate.IResourceExtractor;
 import org.creativecommons.learn.oercloud.Feed;
 import org.creativecommons.learn.oercloud.OaiResource;
@@ -12,7 +12,6 @@ import se.kb.oai.OAIException;
 import se.kb.oai.pmh.MetadataFormat;
 import se.kb.oai.pmh.OaiPmhServer;
 import se.kb.oai.pmh.Record;
-import thewebsemantic.NotFoundException;
 
 public class OaiDcMetadata extends OaiMetadataFormat implements IResourceExtractor {
 
@@ -53,8 +52,8 @@ public class OaiDcMetadata extends OaiMetadataFormat implements IResourceExtract
 		String resource_url = getNodeTextAsUrl(metadata, "//dc:identifier");
 		if (resource_url == null) return;
 		
-		Resource item = getResource(resource_url);
-		item.getSources().add(feed);
+		Resource item = getResourceInFeed(feed, resource_url);
+		item.setAggregationSource(feed);
 
 		// title
 		item.setTitle(getNodeText(metadata, "//dc:title"));
@@ -79,20 +78,16 @@ public class OaiDcMetadata extends OaiMetadataFormat implements IResourceExtract
 		
 		// type(s)
 		item.getTypes().addAll(getNodesText(metadata, "//dc:type"));
-		
-		// source
-		item.getSources().add(feed);
-		
+				
 		// see also
+		/* XXX
 		try {
 			item.getSeeAlso().add(TripleStore.get().load(OaiResource.class, identifier));
 		} catch (NotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		// persist the Resource
-		TripleStore.get().save(item);
+		*/
 	}
 
 }

@@ -2,7 +2,7 @@ package org.creativecommons.learn.aggregate.oaipmh;
 
 import java.util.Collection;
 
-import org.creativecommons.learn.TripleStore;
+import org.creativecommons.learn.oercloud.TripleStore;
 import org.creativecommons.learn.aggregate.IResourceExtractor;
 import org.creativecommons.learn.oercloud.Feed;
 import org.creativecommons.learn.oercloud.OaiResource;
@@ -13,7 +13,6 @@ import se.kb.oai.OAIException;
 import se.kb.oai.pmh.MetadataFormat;
 import se.kb.oai.pmh.OaiPmhServer;
 import se.kb.oai.pmh.Record;
-import thewebsemantic.NotFoundException;
 
 public class OerSubmissions extends OaiMetadataFormat implements IResourceExtractor {
 
@@ -35,24 +34,24 @@ public class OerSubmissions extends OaiMetadataFormat implements IResourceExtrac
 		metadata.addNamespace(OERS, OERS_URL);
 
 		// get a handle to the resource
-		Resource resource = this.getResource(this.getNodeText(metadata, "//oers:url"));
+		Resource resource = this.getResourceInFeed(feed, this.getNodeText(metadata, "//oers:url"));
 		
 		// tags/subjects
 		Collection<String> tags = this.getNodesText(metadata, "//oers:tags/oers:tag"); 
 		resource.getSubjects().addAll(tags);
 
 		// source
-		resource.getSources().add(feed);
+		resource.setAggregationSource(feed);
 		
 		// see also
+		/* XXX
 		try {
 			resource.getSeeAlso().add(TripleStore.get().load(OaiResource.class, identifier));
 		} catch (NotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		TripleStore.get().save(resource);
+		*/
 	}
 
 }
