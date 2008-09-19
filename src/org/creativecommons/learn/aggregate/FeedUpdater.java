@@ -68,7 +68,6 @@ public class FeedUpdater {
 		// get the contents of the feed and emit events for each
 
 		// OPML
-		/* XXX
 		if (feed.getType().toLowerCase().equals("opml")) {
 
 			new Opml().poll(feed);
@@ -78,7 +77,7 @@ public class FeedUpdater {
 			new OaiPmh().poll(feed, force);
 			
 		} else {
-			*/
+
 			try {
 				SyndFeedInput input = new SyndFeedInput();
 				URLConnection feed_connection = new URL(feed.getUrl())
@@ -111,9 +110,7 @@ public class FeedUpdater {
 				Logger.getLogger(Feed.class.getName()).log(Level.SEVERE, null,
 						ex);
 			}
-/* XXX
 		} // not opml...
-		*/
 			
 	} // poll
 
