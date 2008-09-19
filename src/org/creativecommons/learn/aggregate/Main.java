@@ -21,8 +21,8 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.creativecommons.learn.oercloud.TripleStore;
 import org.creativecommons.learn.oercloud.Feed;
+import org.creativecommons.learn.oercloud.store.TripleStore;
 
 
 /**

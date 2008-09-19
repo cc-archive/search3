@@ -15,7 +15,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.creativecommons.learn.oercloud.Curator;
 import org.creativecommons.learn.oercloud.Feed;
-import org.creativecommons.learn.oercloud.TripleStore;
+import org.creativecommons.learn.oercloud.store.TripleStore;
 import org.openrdf.repository.RepositoryException;
 
 /**

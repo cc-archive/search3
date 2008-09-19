@@ -1,4 +1,4 @@
-package org.creativecommons.learn.oercloud;
+package org.creativecommons.learn.oercloud.store;
 
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryException;

@@ -2,7 +2,7 @@ package org.creativecommons.learn.oercloud.behavior;
 
 import javax.xml.namespace.QName;
 
-import org.creativecommons.learn.oercloud.TripleStore;
+import org.creativecommons.learn.oercloud.store.TripleStore;
 import org.openrdf.elmo.ElmoManager;
 import org.openrdf.elmo.ElmoModule;
 
