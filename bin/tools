@@ -100,7 +100,10 @@ fi
 #fi
 
 # add libs to CLASSPATH
-CLASSPATH=${CLASSPATH}:$NUTCH_HOME/lib/
+for f in $NUTCH_HOME/lib/*.jar; do
+  CLASSPATH=${CLASSPATH}:$f;
+done
+
 for f in $NUTCH_HOME/lib/**/*.jar; do
   CLASSPATH=${CLASSPATH}:$f;
 done
