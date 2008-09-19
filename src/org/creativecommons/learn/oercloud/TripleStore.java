@@ -4,7 +4,6 @@
  */
 package org.creativecommons.learn.oercloud;
 
-import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,37 +30,38 @@ import org.openrdf.repository.http.HTTPRepository;
 public class TripleStore {
 
 	private static TripleStore instance = null;
-	
-	private Repository r;
+
+	private Repository repository;
 
 	private ElmoModule elmo;
 	private SesameManagerFactory factory = null;
+
+	protected static Repository createRepository() {
+		
+		String sesameServer = "http://localhost:8080/openrdf-sesame";
+		String repositoryID = "oercloud";
+
+		return new HTTPRepository(sesameServer, repositoryID);
+	}
 
 	public static TripleStore get() {
 
 		if (instance == null) {
 			try {
-				instance = new TripleStore();
+				instance = new TripleStore(createRepository());
 			} catch (RepositoryException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
+
 		return instance;
 	}
 
-	private TripleStore() throws RepositoryException {
+	protected TripleStore(Repository repository) throws RepositoryException {
 
-		// initialize the repository connection
-		File dataDir = new File("/home/nathan/tmp/rdf-store-oercloud");
-		//r = new SailRepository(new NativeStore(dataDir));
-
-		String sesameServer = "http://localhost:8080/openrdf-sesame";
-		String repositoryID = "oercloud";
-
-		r = new HTTPRepository(sesameServer, repositoryID);
-		r.initialize();
+		this.repository = repository;
+		this.repository.initialize();
 
 		// initialize Elmo
 		elmo = this.createModule();
@@ -75,14 +75,7 @@ public class TripleStore {
 	 */
 	public ElmoModule createModule() {
 
-		ElmoModule result = new ElmoModule();
-
-		addModuleRegistrations(result);
-
-		return result;
-	} // createModule
-
-	public void addModuleRegistrations(ElmoModule module) {
+		ElmoModule module = new ElmoModule();
 
 		// core Roles
 		module.addRole(Curator.class);
@@ -95,24 +88,24 @@ public class TripleStore {
 
 		module.addFactory(ContextBehaviorFactory.class, OERCLOUD.Curator);
 		module.addFactory(ContextBehaviorFactory.class, OERCLOUD.Feed);
-	}
+
+		return module;
+	} // createModule
 
 	public Repository getRepository() {
-		return r;
+		return repository;
 	}
 
-	public RepositoryConnection getConnection() {
-		try {
-			return this.r.getConnection();
-		} catch (RepositoryException ex) {
-			Logger.getLogger(TripleStore.class.getName()).log(Level.SEVERE,
-					null, ex);
-		}
-
-		return null;
-
-	} // getConnection
-
+	/*
+	 * public RepositoryConnection getConnection() { try { return
+	 * this.repository.getConnection(); } catch (RepositoryException ex) {
+	 * Logger.getLogger(TripleStore.class.getName()).log(Level.SEVERE, null,
+	 * ex); }
+	 * 
+	 * return null;
+	 * 
+	 * } // getConnection
+	 */
 	public ElmoManager getElmoManager() {
 
 		return this.getManagerFactory().createElmoManager();
@@ -122,21 +115,21 @@ public class TripleStore {
 	public ElmoManager getElmoManager(ElmoModule module) {
 		return this.getManagerFactory(module).createElmoManager();
 	}
-	
+
 	public ElmoManager getElmoManager(QName context) {
-		
+
 		ElmoModule module = this.createModule();
 		module.setGraph(context);
-		
+
 		return this.getElmoManager(module);
-		
+
 	}
 
 	public SesameManagerFactory getManagerFactory() {
 
 		if (this.factory == null) {
 			// create a new factory
-			factory = new SesameManagerFactory(elmo, r);
+			factory = new SesameManagerFactory(elmo, repository);
 		}
 
 		return factory;
@@ -149,43 +142,39 @@ public class TripleStore {
 	}
 
 	/*
-	public boolean exists(Class<?> object_class, String url) {
-		
-		Entity entity = TripleStore.get().getElmoManager().find(new QName(url));
-		
-		try {
-			object_class.cast(entity);
-			return true;
-		} catch (ClassCastException e) {
-		}
-		
-		return false;
-	}
-*/
-	
+	 * public boolean exists(Class<?> object_class, String url) {
+	 * 
+	 * Entity entity = TripleStore.get().getElmoManager().find(new QName(url));
+	 * 
+	 * try { object_class.cast(entity); return true; } catch (ClassCastException
+	 * e) { }
+	 * 
+	 * return false; }
+	 */
+
 	public boolean exists(String context, Class<?> object_class, String url) {
-		
+
 		ElmoModule ctx_module = this.createModule();
 		ctx_module.setGraph(new QName(context));
-		
+
 		Entity entity = this.getElmoManager(ctx_module).find(new QName(url));
-		
+
 		try {
 			object_class.cast(entity);
 			return true;
 		} catch (ClassCastException e) {
 		}
-		
+
 		return false;
 	}
-	
+
 	public Entity find(String context, String identifier) {
 
 		ElmoModule ctx_module = this.createModule();
 		ctx_module.setGraph(new QName(context));
-		
+
 		return this.getElmoManager(ctx_module).find(new QName(identifier));
-		
+
 	}
-	
+
 } // TripleStore
