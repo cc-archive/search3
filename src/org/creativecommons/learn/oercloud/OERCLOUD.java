@@ -17,6 +17,7 @@ public class OERCLOUD {
     public static final String Curator = base_uri + "Curator";
     public static final String Feed = base_uri + "Feed";
     public static final String Resource = base_uri + "Resource";
+    public static final String OaiResource = base_uri + "OaiResource";
 
     // properties
     public static final String hasCurator = base_uri + "hasCurator";
