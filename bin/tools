@@ -35,6 +35,7 @@ if [ $# = 0 ]; then
   echo "where GROUP is one of:"
   echo "  curator           manipulate curators"
   echo "  feed              manipulate feeds"
+  echo "  aggregate         manage aggregation"
   echo " or"
   echo "  CLASSNAME         run the class named CLASSNAME"
   echo "Most groups print help when invoked with '-help'."
@@ -167,6 +168,8 @@ if [ "$COMMAND" = "curator" ] ; then
   CLASS=org.creativecommons.learn.oercloud.tools.CuratorTools
 elif [ "$COMMAND" = "feed" ] ; then
   CLASS=org.creativecommons.learn.oercloud.tools.FeedTools
+elif [ "$COMMAND" = "aggregate" ] ; then
+  CLASS=org.creativecommons.learn.aggregate.Main
 else
   CLASS=$COMMAND
 fi
