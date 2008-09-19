@@ -6,7 +6,7 @@ import org.openrdf.elmo.ElmoManager;
 
 public interface IContextBehavior {
 
-	public QName getQname();
+	public QName get_QName();
 	public String getUrl();
 	public void setQName(QName qname);
 	
