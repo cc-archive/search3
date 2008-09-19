@@ -33,6 +33,10 @@
 	<classpathentry kind="lib" path="lib/openrdf/persistence-api-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/openrdf/slf4j-api-1.5.0.jar"/>
 	<classpathentry kind="lib" path="lib/openrdf/slf4j-jdk14-1.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/jdom.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/rome-1.0RC1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
