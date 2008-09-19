@@ -41,13 +41,13 @@ public class FeedTools {
         Option list = OptionBuilder.withArgName("list").withDescription(
                 "List existing curators.").isRequired(false).create("list");
                 
-        Option curator = OptionBuilder.withArgName("curator").withDescription(
+        Option curator = OptionBuilder.withArgName("curator").hasArg().withDescription(
         		"Set the curator for this feed.").isRequired(false).create("curator");
         Option url = OptionBuilder.withArgName("url").hasArg().withDescription(
                 "The URL of the curator to add/edit/remove.").create("url");
-        Option type = OptionBuilder.withArgName("type").withDescription(
-		"The type of this feed [RSS, application/atom+xml, OAI-PMH, OPML]")
-		.isRequired(false).create("type");
+        Option type = OptionBuilder.withArgName("type").hasArg().withDescription(
+			"The type of this feed [RSS, application/atom+xml, OAI-PMH, OPML]")
+			.isRequired(false).create("type");
 
         options.addOption(help);
 
