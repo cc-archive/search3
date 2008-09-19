@@ -163,11 +163,16 @@ public class FeedTools {
             System.exit(1);
         }
 
-        // find the existing curator
-        Curator curator = (Curator)s.getElmoManager().find(new QName(line.getOptionValue("url")));
+        // find the existing feed
+        Feed feed = (Feed)s.getElmoManager().find(new QName(line.getOptionValue("url")));
 
-        if (line.hasOption("name")) {
-            curator.setName(line.getOptionValue("name"));
+        // set the type
+        if (line.hasOption("type")) {
+        	feed.setType(line.getOptionValue("type"));
+        }
+        
+        if (line.hasOption("curator")) {
+        	feed.setCurator((Curator)s.getElmoManager().find(new QName(line.getOptionValue("curator"))));
         }
         
     } // edit
