@@ -4,6 +4,7 @@
  */
 package org.creativecommons.learn.oercloud;
 
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,6 +30,8 @@ import org.openrdf.repository.http.HTTPRepository;
  */
 public class TripleStore {
 
+	private static TripleStore instance = null;
+	
 	private Repository r;
 
 	private ElmoModule elmo;
@@ -36,18 +39,24 @@ public class TripleStore {
 
 	public static TripleStore get() {
 
-		try {
-			return new TripleStore();
-		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+		if (instance == null) {
+			try {
+				instance = new TripleStore();
+			} catch (RepositoryException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		
+		return instance;
 	}
 
-	public TripleStore() throws RepositoryException {
+	private TripleStore() throws RepositoryException {
 
 		// initialize the repository connection
+		File dataDir = new File("/home/nathan/tmp/rdf-store-oercloud");
+		//r = new SailRepository(new NativeStore(dataDir));
+
 		String sesameServer = "http://localhost:8080/openrdf-sesame";
 		String repositoryID = "oercloud";
 
@@ -64,7 +73,7 @@ public class TripleStore {
 	 * 
 	 * @return ElmoModule
 	 */
-	protected ElmoModule createModule() {
+	public ElmoModule createModule() {
 
 		ElmoModule result = new ElmoModule();
 
@@ -168,6 +177,15 @@ public class TripleStore {
 		}
 		
 		return false;
+	}
+	
+	public Entity find(String context, String identifier) {
+
+		ElmoModule ctx_module = this.createModule();
+		ctx_module.setGraph(new QName(context));
+		
+		return this.getElmoManager(ctx_module).find(new QName(identifier));
+		
 	}
 	
 } // TripleStore
