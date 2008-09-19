@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.creativecommons.learn.oercloud.TripleStore;
 import org.creativecommons.learn.aggregate.IResourceExtractor;
 import org.creativecommons.learn.aggregate.oaipmh.NsdlDc;
 import org.creativecommons.learn.aggregate.oaipmh.OaiDcMetadata;
@@ -13,6 +12,7 @@ import org.creativecommons.learn.aggregate.oaipmh.OerRecommender;
 import org.creativecommons.learn.aggregate.oaipmh.OerSubmissions;
 import org.creativecommons.learn.oercloud.Feed;
 import org.creativecommons.learn.oercloud.OaiResource;
+import org.creativecommons.learn.oercloud.store.TripleStore;
 
 import se.kb.oai.OAIException;
 import se.kb.oai.pmh.Header;
@@ -51,7 +51,8 @@ public class OaiPmh {
 			if (f.getSchema().equals("http://www.oercommons.org/oers.xsd"))
 				result.put(f, new OerSubmissions(f));
 
-			if (f.getSchema().equals("http://ns.nsdl.org/schemas/nsdl_dc/nsdl_dc_v1.02.xsd"))
+			if (f.getSchema().equals(
+					"http://ns.nsdl.org/schemas/nsdl_dc/nsdl_dc_v1.02.xsd"))
 				result.put(f, new NsdlDc(f));
 
 			// oai_lom : http://ltsc.ieee.org/xsd/lomv1.0/lom.xsd
@@ -129,7 +130,7 @@ public class OaiPmh {
 	public void poll(Feed feed) {
 		this.poll(feed, false);
 	}
-	
+
 	public void poll(Feed feed, boolean force) {
 
 		Boolean moreResults = true;
@@ -152,14 +153,14 @@ public class OaiPmh {
 
 		// get the formatted date of the last import
 		String last_import_date = null;
-		if (!force) 
-			last_import_date = iso8601.format(feed.getLastImport());
-		
+		if (!force)
+			last_import_date = iso8601.format(feed.getLastAggregated());
+
 		for (MetadataFormat f : formats.keySet()) {
 
 			try {
-				
-				identifiers = server.listIdentifiers(f.getPrefix(), 
+
+				identifiers = server.listIdentifiers(f.getPrefix(),
 						last_import_date, null, null);
 			} catch (OAIException e) {
 				continue;
@@ -174,36 +175,21 @@ public class OaiPmh {
 
 					// create the OaiResource if needed
 					OaiResource resource = null;
-					if (TripleStore.get().exists(OaiResource.class,
+					if (TripleStore.get().exists(feed.getUrl(), OaiResource.class,
 							header.getIdentifier())) {
-						try {
-							resource = TripleStore.get().load(
-									OaiResource.class, header.getIdentifier());
-						} catch (NotFoundException e) {
-						}
+						resource = (OaiResource) TripleStore.get().find(feed.getUrl(),
+								header.getIdentifier());
 					} else {
-						resource = new OaiResource(header.getIdentifier());
+						resource = feed.addOaiResource(header.getIdentifier()); 
 					}
 
 					// add the set as a subject heading
 					for (String set_spec : header.getSetSpecs()) {
 						if (sets.containsKey(set_spec)) {
-							resource.getSubjects().add(sets.get(set_spec));
+							resource.getSets().add(sets.get(set_spec));
 						}
 					}
-					
-					try {
-						TripleStore.get().save(resource);
-					} catch (NullPointerException e) {
-						System.out.println(resource);
-						System.out.println(resource.getId());
-						System.out.println();
-						for (String foo : resource.getSubjects()) {
-							System.out.println(foo);
-						}
 
-						throw e;
-					}
 
 					// look up the extractor for this format
 					try {
@@ -213,7 +199,9 @@ public class OaiPmh {
 						e.printStackTrace();
 						continue;
 					} catch (Exception e) {
-						LOG.warning("An exception occured while aggregating " + f.getPrefix() + " for " + header.getIdentifier());
+						LOG.warning("An exception occured while aggregating "
+								+ f.getPrefix() + " for "
+								+ header.getIdentifier());
 						LOG.warning("> " + e.getMessage());
 						e.printStackTrace();
 					}
