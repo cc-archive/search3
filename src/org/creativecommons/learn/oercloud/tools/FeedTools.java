@@ -134,7 +134,7 @@ public class FeedTools {
         }
 
         // connect to the triple store
-        TripleStore s = new TripleStore();
+        TripleStore s = TripleStore.get();
 
         // find the curator so we can get the context
         if (!line.hasOption("curator")) {
@@ -155,7 +155,7 @@ public class FeedTools {
     
     protected static void edit(CommandLine line) throws RepositoryException {
         // connect to the triple store
-        TripleStore s = new TripleStore();
+        TripleStore s = TripleStore.get();
 
 
         if (!line.hasOption("url")) {
@@ -174,7 +174,7 @@ public class FeedTools {
     
     protected static void remove(CommandLine line) throws RepositoryException {
         // connect to the triple store
-        TripleStore s = new TripleStore();
+        TripleStore s = TripleStore.get();
 
         if (!line.hasOption("url")) {
             System.err.println("You must specify the URL of the feed.");
@@ -188,7 +188,7 @@ public class FeedTools {
     
     protected static void list(CommandLine line) throws RepositoryException {
         // connect to the triple store
-        TripleStore s = new TripleStore();
+        TripleStore s = TripleStore.get();
 
         // list existing feeds
         for (Feed f : s.getElmoManager().findAll(Feed.class)) {

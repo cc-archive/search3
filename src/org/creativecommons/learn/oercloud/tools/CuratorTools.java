@@ -130,7 +130,7 @@ public class CuratorTools {
         }
 
         // connect to the triple store
-        TripleStore s = new TripleStore();
+        TripleStore s = TripleStore.get();
 
         // create the new curator
         Curator curator = s.getElmoManager().designate(new QName(line.getOptionValue("url")),
@@ -143,7 +143,7 @@ public class CuratorTools {
     
     protected static void edit(CommandLine line) throws RepositoryException {
         // connect to the triple store
-        TripleStore s = new TripleStore();
+        TripleStore s = TripleStore.get();
 
 
         if (!line.hasOption("url")) {
@@ -162,7 +162,7 @@ public class CuratorTools {
     
     protected static void remove(CommandLine line) throws RepositoryException {
         // connect to the triple store
-        TripleStore s = new TripleStore();
+        TripleStore s = TripleStore.get();
 
         if (!line.hasOption("url")) {
             System.err.println("You must specify the URL of the curator.");
@@ -176,7 +176,7 @@ public class CuratorTools {
     
     protected static void list(CommandLine line) throws RepositoryException {
         // connect to the triple store
-        TripleStore s = new TripleStore();
+        TripleStore s = TripleStore.get();
 
         // list existing curators
         for (Curator c : s.getElmoManager().findAll(Curator.class)) {
