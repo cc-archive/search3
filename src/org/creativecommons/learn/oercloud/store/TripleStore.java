@@ -4,9 +4,6 @@
  */
 package org.creativecommons.learn.oercloud.store;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.xml.namespace.QName;
 
 import org.creativecommons.learn.oercloud.Curator;
@@ -21,7 +18,6 @@ import org.openrdf.elmo.ElmoModule;
 import org.openrdf.elmo.Entity;
 import org.openrdf.elmo.sesame.SesameManagerFactory;
 import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.http.HTTPRepository;
 
@@ -175,7 +171,8 @@ public class TripleStore {
 	public Entity find(String context, String identifier) {
 
 		ElmoModule ctx_module = this.createModule();
-		ctx_module.setGraph(new QName(context));
+		if (context != null)
+			ctx_module.setGraph(new QName(context));
 
 		return this.getElmoManager(ctx_module).find(new QName(identifier));
 
