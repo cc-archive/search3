@@ -1,3 +1,0 @@
-[submodule "deps/oai4j"]
-	path = deps/oai4j
-	url = git://code.creativecommons.org/oai4j.git
