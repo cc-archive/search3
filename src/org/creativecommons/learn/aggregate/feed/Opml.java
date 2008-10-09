@@ -43,18 +43,17 @@ public class Opml {
 
 				if (n.getAttributeValue("type").equals("include")) {
 					// explicit inclusion
-					node_feed = TripleStore.get().getElmoManager(
-							new QName(feed.getUrl())).designate(
-							new QName(n.getAttributeValue("url")), Feed.class);
+					node_feed = feed.getCurator().addFeed(n.getAttributeValue("url"));
 					node_feed.setType("opml");
 
 				} else {
 					// assume it's a feed... which to us is anything else
-					node_feed = TripleStore.get().getElmoManager(
-							new QName(feed.getUrl())).designate(
-							new QName(n.getAttributeValue("xmlUrl")),
-							Feed.class);
+					node_feed = feed.getCurator().addFeed(n.getAttributeValue("xmlUrl"));
 					node_feed.setType(n.getAttributeValue("type"));
+					
+					// we disable feeds by default
+					node_feed.setEnabled(false);
+					
 				}
 
 				// XXX poll here?
