@@ -24,4 +24,6 @@ public class OERCLOUD {
     public static final String aggregationSource= base_uri + "aggregationSource";
 
 	public static final String lastAggregated = base_uri + "lastAggregated";
+
+	public static final String isEnabled = base_uri + "isEnabled";
 }
