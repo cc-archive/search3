@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.creativecommons.learn.oercloud.behavior.IContextBehavior;
 import org.openrdf.elmo.annotations.inverseOf;
+import org.openrdf.elmo.annotations.oneOf;
 import org.openrdf.elmo.annotations.rdf;
 
 @rdf(OERCLOUD.Feed)
@@ -16,6 +17,7 @@ public interface Feed extends IContextBehavior {
 	
 	@rdf("http://purl.org/dc/terms/format")
 	public String getType();
+	@oneOf(label={"rdf", "atom", "opml", "oai-pmh"})
 	public void setType(String type);
 	
 	@inverseOf(OERCLOUD.aggregationSource)
@@ -26,5 +28,10 @@ public interface Feed extends IContextBehavior {
 	public Date getLastAggregated();
 	public void setLastAggregated(Date lastAggregated);
 	
+	@rdf(OERCLOUD.isEnabled)
+	public boolean isEnabled();
+	public void setEnabled(boolean enabled);
+	
 	public Resource addResource(String URL);
+	public OaiResource addOaiResource(String identifier);
 }
