@@ -48,6 +48,8 @@ public class FeedTools {
         Option type = OptionBuilder.withArgName("type").hasArg().withDescription(
 			"The type of this feed [RSS, application/atom+xml, OAI-PMH, OPML]")
 			.isRequired(false).create("type");
+        Option enabled = OptionBuilder.withArgName("enabled")
+        	.withDescription("Set the feed to enabled.").create("enabled");
 
         options.addOption(help);
 
@@ -55,10 +57,11 @@ public class FeedTools {
         options.addOption(edit);
         options.addOption(remove);
         options.addOption(list);
-        options.addOption(type);
         
-        options.addOption(url);
         options.addOption(curator);
+        options.addOption(url);
+        options.addOption(type);
+        options.addOption(enabled);
 
         return options;
     }
